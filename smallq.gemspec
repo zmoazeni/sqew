@@ -27,4 +27,5 @@ smallq is not meant to be an all encompassing scalable solution. If you need mor
 
   gem.add_development_dependency "rspec"
   gem.add_development_dependency "debugger"
+  gem.add_development_dependency "artifice"
 end

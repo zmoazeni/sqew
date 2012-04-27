@@ -1,23 +1,27 @@
 require "spec_helper"
 
+class TestingServerJob
+  @testing = 0
+  
+  def self.perform(arg)
+    @testing = arg
+  end
+
+  def self.testing
+    @testing
+  end
+end
+    
 describe Smallq::Server do
   before do
-    class TestingServerJob
-      @testing = 0
-      
-      def self.perform(arg)
-        @testing = arg
-      end
-
-      def self.testing
-        @testing
-      end
-    end
+    @url = "http://0.0.0.0"
   end
   
-  it "enqueues jobs", server:true do
-    json = MultiJson.dump({job:"TestingServerJob", args:15})
-    HTTParty.post("#{SERVER_URL}/enqueue", body:json)
-    TestingServerJob.testing.should == 15
+  it "enqueues jobs" do
+    Artifice.activate_with(Smallq::Server.new) do
+      json = MultiJson.dump({job:"TestingServerJob", args:15})
+      HTTParty.post("#{@url}/enqueue", body:json)
+      TestingServerJob.testing.should == 15
+    end
   end
 end
