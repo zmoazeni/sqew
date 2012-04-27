@@ -6,8 +6,7 @@ describe Smallq::Server do
       @testing = 0
       
       def self.perform(arg)
-        @testing = 1
-        p "in job #{arg.inspect}"
+        @testing = arg
       end
 
       def self.testing
@@ -17,9 +16,8 @@ describe Smallq::Server do
   end
   
   it "enqueues jobs", server:true do
-    HTTParty.post("#{SERVER_URL}/enqueue", body:{job:"TestingServerJob", args:1})
-    @worker.work_off
-    TestingServerJob.testing.should == 1
+    json = MultiJson.dump({job:"TestingServerJob", args:15})
+    HTTParty.post("#{SERVER_URL}/enqueue", body:json)
+    TestingServerJob.testing.should == 15
   end
 end
-c
