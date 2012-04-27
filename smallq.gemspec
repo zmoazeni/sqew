@@ -23,6 +23,8 @@ smallq is not meant to be an all encompassing scalable solution. If you need mor
   gem.add_dependency "multi_json", "~> 1.0"
   gem.add_dependency "sinatra", "~> 1.0"
   gem.add_dependency "thin", "~> 1.0"
+  gem.add_dependency "httparty", "~> 0.8"
 
   gem.add_development_dependency "rspec"
+  gem.add_development_dependency "debugger"
 end
