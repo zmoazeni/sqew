@@ -7,12 +7,11 @@ module Sqew
     end
 
     def stop_server
-      # TODO: safely stop the server
-      p "in stop"
+      @server.terminate
     end
     
     def start_server
-      Thread.new do
+      @server = Thread.new do
         Thin::Logging.silent = true
         Thin::Server.start('0.0.0.0', @port, {signals:false}) do
           run Server.new
