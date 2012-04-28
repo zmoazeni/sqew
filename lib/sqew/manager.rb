@@ -83,7 +83,7 @@ module Sqew
       @lock.synchronize { @workers.size < @max_children }
     end
 
-    def add (pid)
+    def add(pid)
       @lock.synchronize { @workers << pid }
     end
 
