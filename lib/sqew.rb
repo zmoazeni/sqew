@@ -6,7 +6,7 @@ require "thin"
 require "httparty"
 
 require "sqew/version"
-require "sqew/worker"
+require "sqew/manager"
 require "sqew/server"
 
 require "qu/backend/immediate"
