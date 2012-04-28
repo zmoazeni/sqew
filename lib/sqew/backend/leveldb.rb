@@ -34,9 +34,6 @@ module Sqew
         running.delete(payload.id)
       end
 
-      def release(*)
-      end
-      
       def failed(payload, error)
         running.delete(payload.id)
         errors[payload.id] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args, error:error.to_s)
@@ -48,6 +45,9 @@ module Sqew
 
       def running_jobs
         running.values.map {|v| MultiJson.load(v) }
+      end
+
+      def release(*)
       end
 
       def register_worker(*)
