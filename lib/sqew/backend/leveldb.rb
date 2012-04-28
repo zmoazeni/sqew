@@ -2,7 +2,7 @@ module Sqew
   module Backend
     class LevelDB < Qu::Backend::Base
       alias_method :db_path, :connection
-      
+
       def enqueue(payload)
         queue[Time.now.to_f.to_s] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args)
       end
@@ -23,7 +23,7 @@ module Sqew
           end
 
           if options[:block]
-            sleep @poll_frequency
+            sleep 3
           else
             break
           end
