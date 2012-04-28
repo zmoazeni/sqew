@@ -3,12 +3,12 @@ module Sqew
     class LevelDB < Qu::Backend::Base
       alias_method :db_path, :connection
       
-      def queue
-        @queue ||= ::LevelDB::DB.new("#{db_path}/queue.ldb")
-      end
-      
       def enqueue(payload)
         queue[Time.now.to_f.to_s] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args)
+      end
+
+      def length(*)
+        queue.keys.length
       end
       
       def reserve(_, options = {block:false})
@@ -42,6 +42,11 @@ module Sqew
       end
 
       def unregister_worker(*)
+      end
+
+      private
+      def queue
+        @queue ||= ::LevelDB::DB.new("#{db_path}/queue.ldb")
       end
     end
   end

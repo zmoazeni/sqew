@@ -8,4 +8,10 @@ describe Sqew do
     manager.work_off
     TestJob.testing.should == 20
   end
+
+  it "reports the size of the queue" do
+    Sqew.length.should == 0
+    Sqew.enqueue(TestJob, 20)
+    Sqew.length.should == 1
+  end
 end
