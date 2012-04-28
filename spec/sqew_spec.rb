@@ -7,6 +7,7 @@ describe Sqew do
     manager = Sqew::Manager.new
     manager.work_off
     TestJob.testing.should == 20
+    Sqew.running_jobs.should == []
   end
 
   it "reports the size of the queue" do
@@ -20,5 +21,17 @@ describe Sqew do
     manager = Sqew::Manager.new
     manager.work_off
     Sqew.failed_jobs.should == [{"klass"=>"FailJob", "args"=>[-1], "error"=>"failed in FailJob"}]
+  end
+
+  it "provides running jobs" do
+    Sqew.enqueue(SlowJob, 10)
+    manager = Sqew::Manager.new
+    begin
+      thread = Thread.new { manager.work_off }
+      sleep 1
+      Sqew.running_jobs.should == [{"klass"=>"SlowJob", "args"=>[10]}]
+    ensure
+      thread.terminate
+    end
   end
 end

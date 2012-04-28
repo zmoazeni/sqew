@@ -21,3 +21,9 @@ class FailJob
     raise "failed in FailJob"
   end
 end
+
+class SlowJob
+  def self.perform(secs)
+    sleep secs
+  end
+end

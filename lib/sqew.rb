@@ -33,5 +33,5 @@ module Sqew
   end
 
   extend SingleForwardable
-  def_delegators :backend, :failed_jobs
+  def_delegators :backend, :failed_jobs, :running_jobs
 end
