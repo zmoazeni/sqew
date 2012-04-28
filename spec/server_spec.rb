@@ -1,17 +1,5 @@
 require "spec_helper"
 
-class TestingServerJob
-  @testing = 0
-  
-  def self.perform(arg)
-    @testing = arg
-  end
-
-  def self.testing
-    @testing
-  end
-end
-    
 describe Sqew::Server do
   before do
     @url = "http://0.0.0.0"
@@ -23,9 +11,10 @@ describe Sqew::Server do
   end
   
   it "enqueues jobs" do
-    json = MultiJson.dump({job:"TestingServerJob", args:15})
+    TestJob.testing.should == 0
+    json = MultiJson.dump({job:"TestJob", args:15})
     HTTParty.post("#{@url}/enqueue", body:json)
-    TestingServerJob.testing.should == 15
+    TestJob.testing.should == 15
   end
 
   it "allows pings" do
