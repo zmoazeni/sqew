@@ -1,4 +1,4 @@
-module Smallq
+module Sqew
   class Worker < Qu::Worker
     def initialize(port=3000)
       # TODO: come back and handle max_children and multiple queues

@@ -5,13 +5,13 @@ require "sinatra"
 require "thin"
 require "httparty"
 
-require "smallq/version"
-require "smallq/worker"
-require "smallq/server"
+require "sqew/version"
+require "sqew/worker"
+require "sqew/server"
 
 require "qu/backend/immediate"
 
-module Smallq
+module Sqew
   def self.configure(*args, &block)
     Qu.backend = Qu::Backend::Immediate.new
     Qu.configure(*args, &block)

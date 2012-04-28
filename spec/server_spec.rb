@@ -12,10 +12,10 @@ class TestingServerJob
   end
 end
     
-describe Smallq::Server do
+describe Sqew::Server do
   before do
     @url = "http://0.0.0.0"
-    Artifice.activate_with(Smallq::Server.new)
+    Artifice.activate_with(Sqew::Server.new)
   end
 
   after do

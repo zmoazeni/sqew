@@ -1,3 +1,3 @@
-module Smallq
+module Sqew
   VERSION = "0.0.1"
 end

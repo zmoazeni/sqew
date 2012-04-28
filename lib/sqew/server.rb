@@ -1,4 +1,4 @@
-module Smallq
+module Sqew
   class Server < Sinatra::Base
     post "/enqueue" do
       request.body.rewind

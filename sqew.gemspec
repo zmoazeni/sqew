@@ -1,22 +1,22 @@
 # -*- encoding: utf-8 -*-
-require File.expand_path('../lib/smallq/version', __FILE__)
+require File.expand_path('../lib/sqew/version', __FILE__)
 
 Gem::Specification.new do |gem|
   gem.authors       = ["Zach Moazeni"]
   gem.email         = ["zach.moazeni@gmail.com"]
   gem.description   = "a lightweight background processor"
-  gem.summary       = "smallq is a lightweight background processor. You start a single process that will act as a queue manager and will work multiple jobs concurrently.
+  gem.summary       = "sqew is a lightweight background processor. You start a single process that will act as a queue manager and will work multiple jobs concurrently.
 
-smallq is not meant to be an all encompassing scalable solution. If you need more management over worker processes or need to split it among multiple machines, it's recommend to use other background processors such as resque, sidekiq, and qu"
+sqew is not meant to be an all encompassing scalable solution. If you need more management over worker processes or need to split it among multiple machines, it's recommend to use other background processors such as resque, sidekiq, and qu"
   
-  gem.homepage      = "https://github.com/zmoazeni/smallq"
+  gem.homepage      = "https://github.com/zmoazeni/sqew"
 
   gem.files         = `git ls-files`.split($\)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "smallq"
+  gem.name          = "sqew"
   gem.require_paths = ["lib"]
-  gem.version       = Smallq::VERSION
+  gem.version       = Sqew::VERSION
 
   gem.add_dependency "leveldb-ruby", "~> 0.14"
   gem.add_dependency "qu", "~> 0.1"
