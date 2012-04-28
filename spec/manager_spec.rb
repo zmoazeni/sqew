@@ -9,6 +9,7 @@ describe Sqew::Manager do
     response.code.should == 200
 
     manager.stop_server
+    sleep 1
     expect { HTTParty.get("http://0.0.0.0:9962/ping") }.to raise_error(SystemCallError) 
   end
 end

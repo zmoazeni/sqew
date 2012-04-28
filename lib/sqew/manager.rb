@@ -4,18 +4,18 @@ module Sqew
       # TODO: come back and handle max_children and multiple queues
       super([])
       @port = port
+      @thin_server = nil
     end
 
     def stop_server
-      @server.terminate
+      @thin_server.stop
     end
     
     def start_server
-      @server = Thread.new do
+      Thread.new do
         Thin::Logging.silent = true
-        Thin::Server.start('0.0.0.0', @port, {signals:false}) do
-          run Server.new
-        end
+        @thin_server = Thin::Server.new('0.0.0.0', @port, Server.new, {signals:false})
+        @thin_server.start
       end
     end
   end
