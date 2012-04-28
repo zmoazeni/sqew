@@ -7,6 +7,7 @@ module Sqew
     end
 
     def stop_server
+      # TODO: safely stop the server
       p "in stop"
     end
     
