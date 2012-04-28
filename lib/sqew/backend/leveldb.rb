@@ -32,10 +32,15 @@ module Sqew
       def completed(*)
       end
 
-      def failed(*)
+      def release(*)
+      end
+      
+      def failed(payload, error)
+        errors[payload.id] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args, error:error.to_s)
       end
 
-      def release(*)
+      def failed_jobs
+        errors.values.map {|v| MultiJson.load(v) }
       end
 
       def register_worker(*)
@@ -47,6 +52,10 @@ module Sqew
       private
       def queue
         @queue ||= ::LevelDB::DB.new("#{db_path}/queue.ldb")
+      end
+
+      def errors
+        @errors ||= ::LevelDB::DB.new("#{db_path}/errors.ldb")
       end
     end
   end

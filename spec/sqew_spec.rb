@@ -14,4 +14,11 @@ describe Sqew do
     Sqew.enqueue(TestJob, 20)
     Sqew.length.should == 1
   end
+
+  it "provides failed jobs" do
+    Sqew.enqueue(FailJob, -1)
+    manager = Sqew::Manager.new
+    manager.work_off
+    Sqew.failed_jobs.should == [{"klass"=>"FailJob", "args"=>[-1], "error"=>"failed in FailJob"}]
+  end
 end

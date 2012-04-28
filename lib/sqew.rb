@@ -14,13 +14,6 @@ require "sqew/backend/leveldb"
 require 'forwardable'
 
 module Sqew
-  class << self
-    def configure(*args, &block)
-      self.backend = Sqew::Backend::LevelDB.new
-      Qu.configure(*args, &block)
-    end
-  end
-
   module ClassMethods
     extend Forwardable
 
@@ -31,4 +24,14 @@ module Sqew
     def_delegators :qu, :backend, :backend=, :enqueue, :length, :queues, :reserve, :clear
   end
   extend ClassMethods
+
+  class << self
+    def configure(*args, &block)
+      self.backend = Sqew::Backend::LevelDB.new
+      Qu.configure(*args, &block)
+    end
+  end
+
+  extend SingleForwardable
+  def_delegators :backend, :failed_jobs
 end

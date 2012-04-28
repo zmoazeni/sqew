@@ -15,3 +15,9 @@ class TestJob
     end
   end
 end
+
+class FailJob
+  def self.perform(*)
+    raise "failed in FailJob"
+  end
+end
