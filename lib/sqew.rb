@@ -9,6 +9,7 @@ require File.expand_path("../ext/multi_json", File.dirname(__FILE__))
 require "sqew/version"
 require "sqew/manager"
 require "sqew/server"
+require "sqew/payload"
 require "sqew/backend/leveldb"
 
 require 'forwardable'

@@ -19,7 +19,7 @@ module Sqew
             id, job = raw
             queue.delete(id)
             running[id] = job
-            return Qu::Payload.new(MultiJson.load(job).update(id:id))
+            return Sqew::Payload.new(MultiJson.load(job).update(id:id))
           end
 
           if options[:block]
@@ -54,6 +54,12 @@ module Sqew
       end
 
       def unregister_worker(*)
+      end
+
+      def close
+        queue.close
+        running.close
+        errors.close
       end
 
       private
