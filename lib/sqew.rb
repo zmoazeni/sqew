@@ -3,10 +3,16 @@ require "leveldb"
 require "sinatra"
 require "thin"
 require "httparty"
+require "slave"
 require "multi_json"
-require File.expand_path("../ext/multi_json", File.dirname(__FILE__))
+
+# extensions
+%w(slave multi_json).each do |file|
+  require File.expand_path("../ext/#{file}", File.dirname(__FILE__))
+end
 
 require "sqew/version"
+require "sqew/worker"
 require "sqew/manager"
 require "sqew/server"
 require "sqew/payload"
@@ -22,7 +28,7 @@ module Sqew
       Qu
     end
     
-    def_delegators :qu, :backend, :backend=, :enqueue, :length, :queues, :reserve, :clear
+    def_delegators :qu, :backend, :backend=, :enqueue, :length, :queues, :reserve, :clear, :logger
   end
   extend ClassMethods
 

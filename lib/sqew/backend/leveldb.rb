@@ -4,7 +4,8 @@ module Sqew
       alias_method :db_path, :connection
 
       def enqueue(payload)
-        queue[Time.now.to_f.to_s] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args)
+        id = Time.now.to_f.to_s
+        queue.put(id, MultiJson.dump(klass:payload.klass.to_s, args:payload.args), :sync => true)
       end
 
       def length(*)
@@ -13,15 +14,13 @@ module Sqew
       
       def reserve(_, options = {block:false})
         loop do
-          logger.debug { "Reserving job" }
-
           if raw = queue.first
             id, job = raw
-            queue.delete(id)
-            running[id] = job
+            queue.delete(id, :sync => true)
+            running.put(id, job, :sync => true)
             return Sqew::Payload.new(MultiJson.load(job).update(id:id))
           end
-
+          
           if options[:block]
             sleep 3
           else
@@ -31,12 +30,12 @@ module Sqew
       end
 
       def completed(payload)
-        running.delete(payload.id)
+        running.delete(payload.id, :sync => true)
       end
 
       def failed(payload, error)
-        running.delete(payload.id)
-        errors[payload.id] = MultiJson.dump(klass:payload.klass.to_s, args:payload.args, error:error.to_s)
+        running.delete(payload.id, :sync => true)
+        errors.put(payload.id, MultiJson.dump(klass:payload.klass.to_s, args:payload.args, error:error.to_s), :sync => true)
       end
 
       def failed_jobs

@@ -7,8 +7,6 @@ module Sqew
       @thin_server = nil
 
       @max_children = 3
-      @workers = []
-      @lock = Mutex.new
       @group = ThreadGroup.new
     end
 
@@ -28,16 +26,15 @@ module Sqew
       logger.debug "Worker #{id} registering traps for INT and TERM signals"
       %W(INT TERM).each do |sig|
         trap(sig) do
-          unless @forked
-            logger.info "Worker #{id} received #{sig}, will wait for workers to finish then quit"
-            @exiting = true
-          end
+          logger.info "Worker #{id} received #{sig}, will wait for workers to finish then quit"
+          @exiting = true
         end
       end
     end
 
     def start
       logger.warn "Worker #{id} starting"
+      start_slave
       handle_signals
       start_server
       loop do
@@ -48,6 +45,7 @@ module Sqew
           stop_server
           @group.list.map {|t| t.join }
           Qu.backend.close
+          stop_slave
           break
         end
       end
@@ -61,35 +59,23 @@ module Sqew
         logger.debug "Worker #{id} waiting for next job"
         job = Qu.reserve(self)
         if job
-          rd, wr = IO.pipe
-          worker_pid = fork do
-            srand
-            @forked = true
-            rd.close
-            logger.debug "Worker #{id}:#{Process.pid} reserved job #{job}"
-            job.perform_forked(wr)
-            logger.debug "Worker #{id}:#{Process.pid} completed job #{job}"
-          end
-
-          add(worker_pid)
           thread = Thread.new do
             begin
-              Process.wait(worker_pid)
-              wr.close
-              success, error = Marshal.load(rd.read)
+              logger.debug "Worker #{id}:#{Process.pid} reserved job #{job}"
+              remote_thread = @worker.fork_job(job)
+              success, error = remote_thread.value
+              logger.debug "Worker #{id}:#{Process.pid} completed job #{job}"
+              
               if success
                 Qu.backend.completed(job)
               else
                 Qu.failure.create(job, error) if Qu.failure
                 Qu.backend.failed(job, error)
               end
-            rescue => e
+            rescue Exception => e
               logger.error "Thread Error"
               log_exception(e)
-            ensure
-              rd.close
-              remove(worker_pid)
-            end
+            end              
           end
           @group.add(thread)
         end
@@ -97,15 +83,17 @@ module Sqew
     end
 
     def available?
-      @lock.synchronize { @workers.size < @max_children }
+      @group.list.size < @max_children
     end
 
-    def add(pid)
-      @lock.synchronize { @workers << pid }
+    def start_slave
+      trap("INT") { }
+      @worker_server = Slave.new(:threadsafe => true) { Sqew::Worker.new }
+      @worker = @worker_server.object
     end
 
-    def remove(pid)
-      @lock.synchronize { @workers.delete(pid) }
+    def stop_slave
+      @worker_server.shutdown
     end
   end
 end
