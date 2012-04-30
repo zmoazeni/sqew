@@ -2,7 +2,7 @@
 
 sqew is a lightweight background processor. You start a single process that will act as a queue manager and will work multiple jobs concurrently.
 
-sqew is short for "small queue" and is not meant to be an all scalable solution. If you need more management over worker processes or need to split it across multiple machines, you should use other background processors such as [Resque](https://github.com/defunkt/resque), [Sidekiq](https://github.com/mperham/sidekiq), and [Qu](https://github.com/bkeepers/qu).
+sqew is short for "small queue" and is not meant to be an all scalable solution. If you need more management over worker processes or need to split workers across multiple machines, you should use other background processors such as [Resque](https://github.com/defunkt/resque), [Sidekiq](https://github.com/mperham/sidekiq), and [Qu](https://github.com/bkeepers/qu).
 
 sqew adopts a similiar API to make migrating to other background processors easier.
 
