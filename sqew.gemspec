@@ -11,7 +11,7 @@ sqew is not meant to be an all encompassing scalable solution. If you need more 
   
   gem.homepage      = "https://github.com/zmoazeni/sqew"
 
-  gem.files         = `git ls-files`.split($\)
+  gem.files         = `git ls-files`.split($\) - %w(skewed-pole.jpg)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "sqew"
