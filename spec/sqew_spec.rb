@@ -3,7 +3,7 @@ require "spec_helper"
 describe Sqew do
   it "allows jobs to be enqueued and worked" do
     TestJob.testing.should == 0
-    Sqew.enqueue(TestJob, 20)
+    Qu.enqueue(TestJob, 20)
     manager = Sqew::Manager.new
     manager.work_off
     TestJob.testing.should == 20
@@ -12,12 +12,12 @@ describe Sqew do
 
   it "reports the size of the queue" do
     Sqew.length.should == 0
-    Sqew.enqueue(TestJob, 20)
+    Qu.enqueue(TestJob, 20)
     Sqew.length.should == 1
   end
 
   it "provides failed jobs" do
-    Sqew.enqueue(FailJob, -1)
+    Qu.enqueue(FailJob, -1)
     manager = Sqew::Manager.new
     manager.work_off
     failed = Sqew.failed_jobs
@@ -26,7 +26,7 @@ describe Sqew do
   end
 
   it "provides running jobs" do
-    Sqew.enqueue(SlowJob, 10)
+    Qu.enqueue(SlowJob, 10)
     manager = Sqew::Manager.new
     begin
       thread = Thread.new { manager.work_off }

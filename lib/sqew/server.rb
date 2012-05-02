@@ -12,7 +12,7 @@ module Sqew
         json = MultiJson.decode(request.body)
         request.body.rewind
 
-        Sqew.enqueue(json["job"], json["args"])
+        Qu.enqueue(json["job"], *json["args"])
         [202, {"Content-Type" => "application/json"}, ""]
       rescue Exception => e
         json = MultiJson.encode({"error" => "#{e.message}\n#{e.backtrace}"})
