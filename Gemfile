@@ -4,4 +4,3 @@ source 'https://rubygems.org'
 gemspec
 
 gem "rake"
-gem "qu", :git => "git@github.com:zmoazeni/qu.git", :branch => "combined"
