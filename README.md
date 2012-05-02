@@ -48,36 +48,36 @@ Or install it yourself as:
 
 The Sqew manager is a JSON API for inspecting the queue, pushing work onto the queue, and manipulating the queue and workers. Actions you can perform are:
 
-  # enqueue a job
-  # Sqew.push(TheJobClass, 1, 2, 3)
-  POST /enqueue
-    {"job":"TheJobClass", "args":[1, 2, 3]}
-  
-  # ping the server to programatically see if it is alive
-  # Sqew.ping
-  GET /ping
-  
-  # get the status of the queue, running jobs, failed jobs, and how many workers the server will use
-  # Sqew.status
-  GET /status
-  
-  # dynamically change the number of workers (processes) the manager will use
-  # Sqew.workers = 10
-  PUT /workers
-    "10"
-  
-  # clear the entire queue
-  # Sqew.clear
-  DELETE /clear
-  
-  # clear just the failed jobs
-  # Sqew.clear("failed")
-  DELETE /clear
-    failed
-  
-  # delete a specific job by id
-  # Sqew.delete(11)
-  DELETE /11
+    # enqueue a job
+    # Sqew.push(TheJobClass, 1, 2, 3)
+    POST /enqueue
+      {"job":"TheJobClass", "args":[1, 2, 3]}
+    
+    # ping the server to programatically see if it is alive
+    # Sqew.ping
+    GET /ping
+    
+    # get the status of the queue, running jobs, failed jobs, and how many workers the server will use
+    # Sqew.status
+    GET /status
+    
+    # dynamically change the number of workers (processes) the manager will use
+    # Sqew.workers = 10
+    PUT /workers
+      "10"
+    
+    # clear the entire queue
+    # Sqew.clear
+    DELETE /clear
+    
+    # clear just the failed jobs
+    # Sqew.clear("failed")
+    DELETE /clear
+      failed
+    
+    # delete a specific job by id
+    # Sqew.delete(11)
+    DELETE /11
   
 ## Enqueuing jobs
 
