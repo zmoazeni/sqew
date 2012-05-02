@@ -6,6 +6,7 @@ module Sqew
 
     initializer "sqew.logger" do |app|
       Sqew.logger = Rails.logger
+      config.queue = Sqew if config.respond_to?(:queue)
     end
   end
 end
