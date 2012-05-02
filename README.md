@@ -1,8 +1,6 @@
 # sqew (pronounced "skew")
 
-sqew is a lightweight background processor. You start a single process that will act as a queue manager and will work multiple jobs concurrently. sqew is short for "small queue" and is not meant to be an all-in-one scalable solution.
-
-sqew adopts a similiar API to make migrating to other background processors easier.
+sqew is a lightweight background processor. You start a single process that will act as a queue manager and will work multiple jobs concurrently. sqew is short for "small queue" and is not meant to be an all-in-one scalable solution. sqew adopts a similiar API to make migrating to other background processors easy.
 
 ## When would sqew be a good fit for my project?
 
