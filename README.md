@@ -12,7 +12,7 @@ sqew is a lightweight background processor. You start a single process that will
 * You don't want to manage multiple background worker processes, but you do want multiple jobs to run concurrently.
 * You don't want to manage an external service like Redis or Mongo to store the queue.
 * You don't want to worry about threading issues.
-* You don't want to worry about long running processes memory leaking.
+* You don't want to worry about long running processes leaking memory.
 * You don't care about the enqueueing or job forking performance.
 * You don't need multiple queues (this may change soon).
 
