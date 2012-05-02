@@ -16,7 +16,7 @@ describe Sqew::Server do
   
   it "enqueues jobs" do
     TestJob.testing.should == 0
-    json = MultiJson.dump({job:"TestJob", args:15})
+    json = MultiJson.encode({job:"TestJob", args:15})
     HTTParty.post("#{@url}/enqueue", body:json)
     TestJob.testing.should == 15
   end

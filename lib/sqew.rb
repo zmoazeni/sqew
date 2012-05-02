@@ -3,13 +3,9 @@ require "leveldb"
 require "sinatra"
 require "thin"
 require "httparty"
-require "slave"
 require "multi_json"
-
-# extensions
-%w(slave multi_json).each do |file|
-  require File.expand_path("../ext/#{file}", File.dirname(__FILE__))
-end
+require "slave"
+require File.expand_path("../ext/slave", File.dirname(__FILE__))
 
 require "sqew/version"
 require "sqew/worker"

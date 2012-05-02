@@ -5,7 +5,7 @@ module Sqew
 
       def enqueue(payload)
         id = Time.now.to_f.to_s
-        queue.put(id, MultiJson.dump(klass:payload.klass.to_s, args:payload.args), :sync => true)
+        queue.put(id, MultiJson.encode(klass:payload.klass.to_s, args:payload.args), :sync => true)
       end
 
       def length(*)
@@ -18,7 +18,7 @@ module Sqew
             id, job = raw
             queue.delete(id, :sync => true)
             running.put(id, job, :sync => true)
-            return Sqew::Payload.new(MultiJson.load(job).update(id:id))
+            return Sqew::Payload.new(MultiJson.decode(job).update(id:id))
           end
           
           if options[:block]
@@ -35,15 +35,15 @@ module Sqew
 
       def failed(payload, error)
         running.delete(payload.id, :sync => true)
-        errors.put(payload.id, MultiJson.dump(klass:payload.klass.to_s, args:payload.args, error:error.to_s), :sync => true)
+        errors.put(payload.id, MultiJson.encode(klass:payload.klass.to_s, args:payload.args, error:error.to_s), :sync => true)
       end
 
       def failed_jobs
-        errors.values.map {|v| MultiJson.load(v) }
+        errors.values.map {|v| MultiJson.decode(v) }
       end
 
       def running_jobs
-        running.values.map {|v| MultiJson.load(v) }
+        running.values.map {|v| MultiJson.decode(v) }
       end
 
       def release(*)
