@@ -32,7 +32,7 @@ module Sqew
       @server = raw
     end
     
-    def_delegators :qu, :backend, :backend=, :length, :queues, :reserve, :clear, :logger, :logger=, :failure, :failure=
+    def_delegators :qu, :backend, :backend=, :length, :queues, :reserve, :logger, :logger=, :failure, :failure=
   end
   extend ClassMethods
 
@@ -72,6 +72,12 @@ module Sqew
       @http.request(request)
     end
     alias_method :workers=, :set_workers
+
+    def clear(*queues)
+      request = Net::HTTP::Delete.new("/clear")
+      request.body = queues.join(",")
+      @http.request(request)
+    end
   end
 
   extend SingleForwardable

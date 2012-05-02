@@ -19,6 +19,7 @@ RSpec.configure do |c|
   c.debug = true
 
   c.before do
+    Sqew.backend.close
     FileUtils.rm_rf(DB_PATH)
     FileUtils.mkdir_p(DB_PATH)
     TestJob.reset

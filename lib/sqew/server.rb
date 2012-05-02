@@ -36,6 +36,7 @@ module Sqew
 
     put "/workers" do
       b = request.body.read
+      request.body.rewind
       case b
       when "pause"
         @manager.pause_workers
@@ -44,6 +45,13 @@ module Sqew
       else
         @manager.max_workers = b.to_i
       end
+      [200, {}, ""]
+    end
+
+    delete "/clear" do
+      b = request.body.read
+      request.body.rewind
+      Qu.clear(*b.split(","))
       [200, {}, ""]
     end
   end

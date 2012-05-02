@@ -11,6 +11,11 @@ module Sqew
       def length(*)
         queue.keys.length
       end
+
+      def clear(*queues)
+        drop_all(queue) if queues.include?("queue") || queues.empty?
+        drop_all(errors) if queues.include?("failed") || queues.empty?
+      end
       
       def reserve(_, options = {block:false})
         loop do
@@ -63,6 +68,7 @@ module Sqew
         queue.close
         running.close
         errors.close
+        @queue, @running, @errors = nil
       end
 
       private
@@ -76,6 +82,10 @@ module Sqew
 
       def errors
         @errors ||= ::LevelDB::DB.new("#{db}/errors.ldb")
+      end
+
+      def drop_all(db)
+        db.each {|k,_| db.delete(k) }
       end
     end
   end

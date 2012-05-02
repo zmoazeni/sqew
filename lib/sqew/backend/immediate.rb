@@ -9,6 +9,9 @@ module Sqew
       alias_method :running_jobs, :queued_jobs
       alias_method :failed_jobs, :queued_jobs
     end
+
+    def close
+    end
   end
 end
 

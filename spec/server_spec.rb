@@ -54,4 +54,14 @@ describe Sqew::Server do
     Sqew.workers = :resume
     @manager.max_workers.should == 3
   end
+
+  it "should allow queues to be cleared" do
+    Qu.should_receive(:clear).with("queued", "failed")
+    Sqew.clear("queued", "failed")
+  end
+  
+  it "should allow all queues to be cleared" do
+    Qu.should_receive(:clear).with()
+    Sqew.clear
+  end
 end
