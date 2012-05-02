@@ -33,5 +33,18 @@ module Sqew
     get "/ping" do
       [200, {}, ""]
     end
+
+    put "/workers" do
+      b = request.body.read
+      case b
+      when "pause"
+        @manager.pause_workers
+      when "resume"
+        @manager.resume_workers
+      else
+        @manager.max_workers = b.to_i
+      end
+      [200, {}, ""]
+    end
   end
 end

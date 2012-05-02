@@ -12,6 +12,22 @@ module Sqew
       @group = ThreadGroup.new
     end
 
+    def pause_workers
+      @paused_workers ||= @max_workers
+      @max_workers = 0
+    end
+
+    def resume_workers
+      if @paused_workers
+        @max_workers = @paused_workers
+      end
+    end
+
+    def max_workers=(count)
+      @paused_workers = nil
+      @max_workers = count
+    end
+
     def start_server
       Thread.new do
         Thin::Logging.silent = true

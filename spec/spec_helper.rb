@@ -25,3 +25,11 @@ RSpec.configure do |c|
     Timecop.return
   end
 end
+
+def save_and_open_page(response)
+  filename = File.expand_path("tmp/#{Digest::SHA1.hexdigest(Time.now.to_f.to_s)}.html", File.dirname(__FILE__)) 
+  File.open(filename, "w") do |file|
+    file << response.body
+  end
+  `open #{filename}`
+end
