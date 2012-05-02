@@ -1,5 +1,11 @@
 module Sqew
   class Server < Sinatra::Base
+
+    def initialize(manager)
+      super
+      @manager = manager
+    end
+    
     post "/enqueue" do
       begin
         request.body.rewind
@@ -15,7 +21,12 @@ module Sqew
     end
 
     get "/status" do
-      json = MultiJson.encode({"queued" => Sqew.queued_jobs, "failed" => Sqew.failed_jobs, "running" => Sqew.running_jobs})
+      json = MultiJson.encode({
+                                "queued" => Sqew.queued_jobs,
+                                "failed" => Sqew.failed_jobs,
+                                "running" => Sqew.running_jobs,
+                                "workers" => @manager.max_workers
+                              })
       [200, {"Content-Type" => "application/json"}, json]
     end
 

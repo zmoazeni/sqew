@@ -1,19 +1,21 @@
 module Sqew
   class Manager < Qu::Worker
-    def initialize(port=3000)
+    attr_accessor :max_workers
+    
+    def initialize(port = 3000, max_workers = 3)
       super([])
       @port = port
       @poll = 1
       @thin_server = nil
+      @max_workers = max_workers
 
-      @max_children = 3
       @group = ThreadGroup.new
     end
 
     def start_server
       Thread.new do
         Thin::Logging.silent = true
-        @thin_server = Thin::Server.new('0.0.0.0', @port, Server.new, {signals:false})
+        @thin_server = Thin::Server.new('0.0.0.0', @port, Server.new(self), {signals:false})
         @thin_server.start
       end
     end
@@ -83,7 +85,7 @@ module Sqew
     end
 
     def available?
-      @group.list.size < @max_children
+      @group.list.size < @max_workers
     end
 
     def start_slave

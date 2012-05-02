@@ -6,7 +6,8 @@ describe Sqew::Server do
     Sqew.backend = Sqew::Backend::Immediate.new
     
     @url = "http://0.0.0.0"
-    Artifice.activate_with(Sqew::Server.new)
+    @manager = double("manager", :max_workers => 3)
+    Artifice.activate_with(Sqew::Server.new(@manager))
   end
 
   after do
@@ -29,10 +30,6 @@ describe Sqew::Server do
   it "returns the status" do
     response = HTTParty.get("#{@url}/status")
     response.code.should == 200
-    json = MultiJson.decode(response.body)
-    json["queued"].should == []
-    json["running"].should == []
-    json["failed"].should == []
+    MultiJson.decode(response.body).should == {"queued" => [], "running" => [], "failed" => [], "workers" => 3}
   end
-  
 end
