@@ -14,10 +14,6 @@ sqew is a lightweight background processor. You start a single process that will
 
 If these don't fit the bill or you need more power, I recommend you try the great other great gems such as [Resque](https://github.com/defunkt/resque), [Sidekiq](https://github.com/mperham/sidekiq), and [Qu](https://github.com/bkeepers/qu).
 
-## Is it any good?
-
-[Yes.](http://news.ycombinator.com/item?id=3067434)
-
 ## Rails Installation
 
 Add this line to your application's Gemfile:
@@ -101,6 +97,10 @@ And the manager will receive the job and start working on it when it can. You ca
 If you're using Rails 4 you can enqueue the job by using the Rails queuing API:
 
     Rails.queue.push(MyJob, 1, 2)
+
+## Is it any good?
+
+[Yes.](http://news.ycombinator.com/item?id=3067434)
 
 ## Where does sqew store its data?
 
