@@ -117,6 +117,7 @@ No. It uses [forking](http://en.wikipedia.org/wiki/Fork_(operating_system\)) hea
 ## TODO Soon
 
 * Reusable God/Bluepil/Monit config for managing the worker
+* Capistrano plugin for restarting the worker on deploy
 * Javascript browser front-end for the manager
 * Multiple queues with weight (possibly)
 
