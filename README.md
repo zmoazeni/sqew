@@ -6,6 +6,7 @@ sqew is a lightweight background processor. You start a single process that will
 
 * You don't need to split workers across multiple machines.
 * You don't want to manage multiple background worker processes, but you do want multiple jobs to run concurrently.
+* You don't want to manage an external service like Redis or Mongo to store the queue.
 * You don't want to worry about threading issues.
 * You don't want to worry about long running processes memory leaking.
 * You don't care about the enqueueing or job forking performance.
@@ -101,6 +102,9 @@ If you're using Rails 4 you can enqueue the job by using the Rails queuing API:
 
     Rails.queue.push(MyJob, 1, 2)
 
+## Where does sqew store its data?
+
+Sqew doesn't use redis or your rails database. It uses [LevelDB](http://code.google.com/p/leveldb/) to manage its persistence. So you don't have to manage/setup anything.
 
 ## TODO Soon
 
