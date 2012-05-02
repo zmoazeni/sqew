@@ -19,7 +19,7 @@ Add this line to your application's Gemfile:
 
     gem sqew, :require "sqew/rails"
 
-And a initializer in `config/initializers/sqew.rb`
+Add an initializer in `config/initializers/sqew.rb`
 
     Sqew.configure do |config|
       config.db = "#{Rails.root}/tmp/"
