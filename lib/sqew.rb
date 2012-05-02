@@ -50,7 +50,7 @@ module Sqew
 
     def push(job, *args)
       request = Net::HTTP::Post.new("/enqueue")
-      request.body = MultiJson.encode("job" => job, "args" => args)
+      request.body = MultiJson.encode("job" => job.to_s, "args" => args)
       http.request(request)
     end
     alias_method :enqueue, :push
