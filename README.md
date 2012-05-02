@@ -108,7 +108,7 @@ Sqew doesn't use redis or your rails database. It uses [LevelDB](http://code.goo
 
 ## Does it work on windows?
 
-No. It uses [forking](http://en.wikipedia.org/wiki/Fork_(operating_system)) heavily.
+No. It uses [forking](http://en.wikipedia.org/wiki/Fork_(operating_system\)) heavily.
 
 ## TODO Soon
 
