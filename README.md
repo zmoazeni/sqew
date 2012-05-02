@@ -106,6 +106,10 @@ If you're using Rails 4 you can enqueue the job by using the Rails queuing API:
 
 Sqew doesn't use redis or your rails database. It uses [LevelDB](http://code.google.com/p/leveldb/) to manage its persistence. So you don't have to manage/setup anything.
 
+## Does it work on windows?
+
+No. It uses [forking](http://en.wikipedia.org/wiki/Fork_(operating_system)) heavily.
+
 ## TODO Soon
 
 * Reusable God/Bluepil/Monit config for managing the worker
