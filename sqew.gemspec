@@ -9,7 +9,7 @@ Gem::Specification.new do |gem|
 
 sqew is not meant to be an all encompassing scalable solution. If you need more management over worker processes or need to split it among multiple machines, it's recommend to use other background processors such as resque, sidekiq, and qu"
   
-  gem.homepage      = "https://github.com/zmoazeni/sqew"
+  gem.homepage      = "http://zmoazeni.github.com/sqew/"
 
   gem.files         = `git ls-files`.split($\) - %w(skewed-pole.jpg)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
