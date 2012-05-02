@@ -1,3 +1,5 @@
+require "sqew"
+
 Sqew.configure do |c|
   c.logger = Logger.new(STDOUT)
   c.logger.level = Logger::INFO
