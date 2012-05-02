@@ -16,6 +16,14 @@ module Sqew
         drop_all(queue) if queues.include?("queue") || queues.empty?
         drop_all(errors) if queues.include?("failed") || queues.empty?
       end
+
+      def delete(id)
+        if queue.exists?(id)
+          queue.delete(id)
+        elsif errors.exists?(id)
+          errors.delete(id)
+        end
+      end
       
       def reserve(_, options = {block:false})
         loop do

@@ -42,4 +42,16 @@ describe Sqew::Backend::LevelDB do
     @backend.queued_jobs.should == [{"klass"=>"TestJob", "args"=>2, "id" => "1336003200.0"}]
     @backend.running_jobs.should == [{"klass"=>"TestJob", "args"=>1, "id" => "1335916800.0"}]
   end
+  
+  it "should allow jobs to be deleted" do
+    error1 = double("error1", :message => "some error1", :backtrace => ["backtrace1"])
+    @backend.failed(Qu::Payload.new(:klass => TestJob, :args => 1, :id => "1"), error1)
+    Timecop.freeze(Time.utc(2012, 5, 2)) { @backend.enqueue(Qu::Payload.new(:klass => TestJob, :args => 1)) }
+
+    @backend.delete("1")
+    @backend.failed_jobs.should == []
+
+    @backend.delete("1335916800.0")
+    @backend.queued_jobs.should == []
+  end
 end

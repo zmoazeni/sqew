@@ -54,5 +54,10 @@ module Sqew
       Qu.clear(*b.split(","))
       [200, {}, ""]
     end
+
+    delete "/:id" do
+      Qu.backend.delete(params[:id])
+      [200, {}, ""]
+    end
   end
 end

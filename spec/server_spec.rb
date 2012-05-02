@@ -64,4 +64,9 @@ describe Sqew::Server do
     Qu.should_receive(:clear).with()
     Sqew.clear
   end
+
+  it "should allow jobs to be deleted" do
+    Qu.backend.should_receive(:delete).with("10")
+    Sqew.delete("10")
+  end
 end

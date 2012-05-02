@@ -78,6 +78,11 @@ module Sqew
       request.body = queues.join(",")
       @http.request(request)
     end
+
+    def delete(id)
+      request = Net::HTTP::Delete.new("/#{id}")
+      @http.request(request)
+    end
   end
 
   extend SingleForwardable
