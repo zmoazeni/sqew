@@ -30,6 +30,7 @@ module Sqew
     end
 
     def start_server
+      logger.info "Starting server on #{@uri}"
       Thread.new do
         Thin::Logging.silent = true
         @thin_server = Thin::Server.new(@uri.host, @uri.port, Server.new(self), {signals:false})
