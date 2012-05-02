@@ -20,7 +20,9 @@ describe Sqew do
     Sqew.enqueue(FailJob, -1)
     manager = Sqew::Manager.new
     manager.work_off
-    Sqew.failed_jobs.should == [{"klass"=>"FailJob", "args"=>[-1], "error"=>"failed in FailJob"}]
+    failed = Sqew.failed_jobs
+    failed.size.should == 1
+    failed[0]["klass"].should == "FailJob"
   end
 
   it "provides running jobs" do
@@ -29,7 +31,9 @@ describe Sqew do
     begin
       thread = Thread.new { manager.work_off }
       sleep 1
-      Sqew.running_jobs.should == [{"klass"=>"SlowJob", "args"=>[10]}]
+      running = Sqew.running_jobs
+      running.size.should == 1
+      running[0]["klass"].should == "SlowJob"
     ensure
       thread.terminate
     end

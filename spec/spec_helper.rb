@@ -3,6 +3,7 @@ require "sqew"
 require "fileutils"
 require "timeout"
 require "artifice"
+require "timecop"
 require "sqew/backend/immediate"
 
 Dir[File.expand_path("support/*.rb", File.dirname(__FILE__))].each {|r| require r}
@@ -21,5 +22,6 @@ RSpec.configure do |c|
     FileUtils.rm_rf(DB_PATH)
     FileUtils.mkdir_p(DB_PATH)
     TestJob.reset
+    Timecop.return
   end
 end

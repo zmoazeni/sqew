@@ -14,6 +14,11 @@ module Sqew
       end
     end
 
+    get "/status" do
+      json = MultiJson.encode({"queued" => Sqew.queued_jobs, "failed" => Sqew.failed_jobs, "running" => Sqew.running_jobs})
+      [200, {"Content-Type" => "application/json"}, json]
+    end
+
     get "/ping" do
       [200, {}, ""]
     end

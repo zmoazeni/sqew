@@ -35,15 +35,19 @@ module Sqew
 
       def failed(payload, error)
         running.delete(payload.id, :sync => true)
-        errors.put(payload.id, MultiJson.encode(klass:payload.klass.to_s, args:payload.args, error:error.to_s), :sync => true)
+        errors.put(payload.id, MultiJson.encode("klass" => payload.klass.to_s, "args" => payload.args, "error" => error.message, "backtrace" => error.backtrace.join("\n")), :sync => true)
       end
 
       def failed_jobs
-        errors.values.map {|v| MultiJson.decode(v) }
+        errors.to_a.map {|k,v| MultiJson.decode(v).update("id" => k) }
       end
 
       def running_jobs
-        running.values.map {|v| MultiJson.decode(v) }
+        running.to_a.map {|k,v| MultiJson.decode(v).update("id" => k) }
+      end
+
+      def queued_jobs
+        queue.to_a.map {|k,v| MultiJson.decode(v).update("id" => k) }
       end
 
       def release(*)

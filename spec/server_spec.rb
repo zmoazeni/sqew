@@ -25,4 +25,14 @@ describe Sqew::Server do
     response = HTTParty.get("#{@url}/ping")
     response.code.should == 200
   end
+
+  it "returns the status" do
+    response = HTTParty.get("#{@url}/status")
+    response.code.should == 200
+    json = MultiJson.decode(response.body)
+    json["queued"].should == []
+    json["running"].should == []
+    json["failed"].should == []
+  end
+  
 end
