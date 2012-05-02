@@ -82,7 +82,6 @@ module Sqew
     private
     def work
       if available?
-        logger.debug "Worker #{id} waiting for next job"
         job = Qu.reserve(self)
         if job
           thread = Thread.new do
