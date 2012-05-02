@@ -62,7 +62,7 @@ The Sqew manager is a JSON API for inspecting the queue, pushing work onto the q
     GET /status
     
     # dynamically change the number of workers (processes) the manager will use
-    # Sqew.workers = 10
+    # Sqew.workers = 10 (the default is 3)
     PUT /workers
       "10"
     
