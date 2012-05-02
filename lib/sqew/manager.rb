@@ -52,11 +52,17 @@ module Sqew
       end
     end
 
+    def work_off
+      Qu.backend.clear_running
+      super
+    end
+
     def start
       logger.warn "Worker #{id} starting"
       start_slave
       handle_signals
       start_server
+      Qu.backend.clear_running
       loop do
         work
         sleep @poll

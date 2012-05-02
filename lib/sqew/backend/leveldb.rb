@@ -17,6 +17,10 @@ module Sqew
         drop_all(errors) if queues.include?("failed") || queues.empty?
       end
 
+      def clear_running
+        drop_all(running)
+      end
+
       def delete(id)
         if queue.exists?(id)
           queue.delete(id)
