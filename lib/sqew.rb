@@ -1,10 +1,11 @@
-require "qu"
+require "slave"
+require File.expand_path("../ext/slave", File.dirname(__FILE__))
+require File.expand_path("../ext/qu", File.dirname(__FILE__))
+
 require "leveldb"
 require "sinatra/base"
 require "thin"
 require "multi_json"
-require "slave"
-require File.expand_path("../ext/slave", File.dirname(__FILE__))
 
 require "sqew/version"
 require "sqew/worker"
