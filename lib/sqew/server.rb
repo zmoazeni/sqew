@@ -5,6 +5,16 @@ module Sqew
       super
       @manager = manager
     end
+
+    def route_missing
+      raise Sinatra::NotFound
+    end
+    
+    set :show_exceptions, false
+
+    not_found do
+      [404, {}, ""]
+    end
     
     post "/enqueue" do
       begin
