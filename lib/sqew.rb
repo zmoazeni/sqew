@@ -32,7 +32,7 @@ module Sqew
       @server = raw
     end
     
-    def_delegators :qu, :connection, :connection=, :backend, :backend=, :length, :queues, :reserve, :clear, :logger, :logger=, :failure, :failure=
+    def_delegators :qu, :backend, :backend=, :length, :queues, :reserve, :clear, :logger, :logger=, :failure, :failure=
   end
   extend ClassMethods
 
@@ -41,6 +41,7 @@ module Sqew
       self.backend = Sqew::Backend::LevelDB.new
       block.call(self)
       self.server ||= "http://0.0.0.0:9962"
+      self.db     ||= "/tmp/"
     end
 
     def enqueue(job, *args)
@@ -73,5 +74,5 @@ module Sqew
   end
 
   extend SingleForwardable
-  def_delegators :backend, :failed_jobs, :running_jobs, :queued_jobs
+  def_delegators :backend, :failed_jobs, :running_jobs, :queued_jobs, :db, :db=
 end

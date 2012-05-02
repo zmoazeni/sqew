@@ -3,7 +3,7 @@ require "spec_helper"
 describe Sqew::Backend::LevelDB do
   before do
     @backend = Sqew::Backend::LevelDB.new()
-    @backend.connection = DB_PATH
+    @backend.db = DB_PATH
   end
 
   it "should report queued jobs" do

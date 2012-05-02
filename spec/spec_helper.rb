@@ -11,7 +11,7 @@ Dir[File.expand_path("support/*.rb", File.dirname(__FILE__))].each {|r| require 
 DB_PATH = File.expand_path("./tmp/db", File.dirname(__FILE__))
 
 Sqew.configure do |c|
-  c.connection = DB_PATH
+  c.db = DB_PATH
   c.logger.level = Logger::UNKNOWN
 end
 

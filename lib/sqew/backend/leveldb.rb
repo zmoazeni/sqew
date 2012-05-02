@@ -1,7 +1,7 @@
 module Sqew
   module Backend
     class LevelDB < Qu::Backend::Base
-      alias_method :db_path, :connection
+      attr_accessor :db
 
       def enqueue(payload)
         id = Time.now.to_f.to_s
@@ -67,15 +67,15 @@ module Sqew
 
       private
       def queue
-        @queue ||= ::LevelDB::DB.new("#{db_path}/queue.ldb")
+        @queue ||= ::LevelDB::DB.new("#{db}/queue.ldb")
       end
 
       def running
-        @running ||= ::LevelDB::DB.new("#{db_path}/running.ldb")
+        @running ||= ::LevelDB::DB.new("#{db}/running.ldb")
       end
 
       def errors
-        @errors ||= ::LevelDB::DB.new("#{db_path}/errors.ldb")
+        @errors ||= ::LevelDB::DB.new("#{db}/errors.ldb")
       end
     end
   end
