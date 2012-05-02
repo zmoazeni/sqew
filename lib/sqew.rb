@@ -20,44 +20,54 @@ module Sqew
   module ClassMethods
     extend Forwardable
 
+    attr_accessor :server
+
     def qu
       Qu
     end
+
+    def server=(raw)
+      uri = URI.parse(raw)
+      @http = Net::HTTP.new(uri.host, uri.port)
+      @server = raw
+    end
     
-    def_delegators :qu, :backend, :backend=, :length, :queues, :reserve, :clear, :logger
+    def_delegators :qu, :connection, :connection=, :backend, :backend=, :length, :queues, :reserve, :clear, :logger, :logger=, :failure, :failure=
   end
   extend ClassMethods
 
   class << self
     def configure(*args, &block)
       self.backend = Sqew::Backend::LevelDB.new
-      Qu.configure(*args, &block)
+      block.call(self)
+      self.server ||= "http://0.0.0.0:9962"
     end
 
     def enqueue(job, *args)
-      http = Net::HTTP.new("0.0.0.0")
       request = Net::HTTP::Post.new("/enqueue")
       request.body = MultiJson.encode("job" => job, "args" => args)
-      http.request(request)
+      @http.request(request)
     end
 
     def ping
-      http = Net::HTTP.new("0.0.0.0")
       request = Net::HTTP::Get.new("/ping")
-      http.request(request)
+      @http.request(request)
     end
 
     def status
-      http = Net::HTTP.new("0.0.0.0")
       request = Net::HTTP::Get.new("/status")
-      http.request(request)
+      response = @http.request(request)
+      if response.code == "200"
+        MultiJson.decode(@http.request(request).body)
+      else
+        raise "Error connecting to server #{response.code}:#{response.body}"
+      end
     end
 
     def set_workers(count)
-      http = Net::HTTP.new("0.0.0.0")
       request = Net::HTTP::Put.new("/workers")
       request.body = count.to_s
-      http.request(request)
+      @http.request(request)
     end
     alias_method :workers=, :set_workers
   end

@@ -5,9 +5,9 @@ describe Sqew::Server do
     @old_backend = Sqew.backend
     Sqew.backend = Sqew::Backend::Immediate.new
     
-    @url = "http://0.0.0.0"
     @manager = Sqew::Manager.new(3000, 3)
     Artifice.activate_with(Sqew::Server.new(@manager))
+    Sqew.server = "http://0.0.0.0:3000"
   end
 
   after do
@@ -27,9 +27,8 @@ describe Sqew::Server do
   end
 
   it "returns the status" do
-    response = Sqew.status
-    response.code.should == "200"
-    MultiJson.decode(response.body).should == {"queued" => [], "running" => [], "failed" => [], "workers" => 3}
+    status = Sqew.status
+    status.should == {"queued" => [], "running" => [], "failed" => [], "workers" => 3}
   end
 
   it "allows workers to be configured" do
