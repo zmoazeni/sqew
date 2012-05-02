@@ -17,7 +17,7 @@ describe Sqew::Server do
   
   it "enqueues jobs" do
     TestJob.testing.should == 0
-    Sqew.enqueue("TestJob", 15)
+    Sqew.push("TestJob", 15)
     TestJob.testing.should == 15
   end
 

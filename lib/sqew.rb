@@ -44,11 +44,12 @@ module Sqew
       self.db     ||= "/tmp/"
     end
 
-    def enqueue(job, *args)
+    def push(job, *args)
       request = Net::HTTP::Post.new("/enqueue")
       request.body = MultiJson.encode("job" => job, "args" => args)
       @http.request(request)
     end
+    alias_method :enqueue, :push
 
     def ping
       request = Net::HTTP::Get.new("/ping")
