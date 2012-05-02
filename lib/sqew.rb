@@ -27,8 +27,7 @@ module Sqew
     end
 
     def server=(raw)
-      uri = URI.parse(raw)
-      @http = Net::HTTP.new(uri.host, uri.port)
+      URI.parse(raw) # verify it's parsable
       @server = raw
     end
     
@@ -44,23 +43,28 @@ module Sqew
       self.db     ||= "/tmp/"
     end
 
+    def http
+      uri = URI.parse(server)
+      @http ||= Net::HTTP.new(uri.host, uri.port)
+    end
+
     def push(job, *args)
       request = Net::HTTP::Post.new("/enqueue")
       request.body = MultiJson.encode("job" => job, "args" => args)
-      @http.request(request)
+      http.request(request)
     end
     alias_method :enqueue, :push
 
     def ping
       request = Net::HTTP::Get.new("/ping")
-      @http.request(request)
+      http.request(request)
     end
 
     def status
       request = Net::HTTP::Get.new("/status")
-      response = @http.request(request)
+      response = http.request(request)
       if response.code == "200"
-        MultiJson.decode(@http.request(request).body)
+        MultiJson.decode(http.request(request).body)
       else
         raise "Error connecting to server #{response.code}:#{response.body}"
       end
@@ -69,19 +73,19 @@ module Sqew
     def set_workers(count)
       request = Net::HTTP::Put.new("/workers")
       request.body = count.to_s
-      @http.request(request)
+      http.request(request)
     end
     alias_method :workers=, :set_workers
 
     def clear(*queues)
       request = Net::HTTP::Delete.new("/clear")
       request.body = queues.join(",")
-      @http.request(request)
+      http.request(request)
     end
 
     def delete(id)
       request = Net::HTTP::Delete.new("/#{id}")
-      @http.request(request)
+      http.request(request)
     end
   end
 

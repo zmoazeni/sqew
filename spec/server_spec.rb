@@ -5,9 +5,8 @@ describe Sqew::Server do
     @old_backend = Sqew.backend
     Sqew.backend = Sqew::Backend::Immediate.new
     
-    @manager = Sqew::Manager.new(3000, 3)
+    @manager = Sqew::Manager.new(3)
     Artifice.activate_with(Sqew::Server.new(@manager))
-    Sqew.server = "http://0.0.0.0:3000"
   end
 
   after do

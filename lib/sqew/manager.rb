@@ -2,12 +2,13 @@ module Sqew
   class Manager < Qu::Worker
     attr_accessor :max_workers
     
-    def initialize(port = 3000, max_workers = 3)
+    def initialize(max_workers = 3)
+      raise "Configure sqew before starting the manager" unless Sqew.server
       super([])
-      @port = port
+      @max_workers = max_workers
+      @uri = URI.parse(Sqew.server)
       @poll = 1
       @thin_server = nil
-      @max_workers = max_workers
 
       @group = ThreadGroup.new
     end
@@ -31,7 +32,7 @@ module Sqew
     def start_server
       Thread.new do
         Thin::Logging.silent = true
-        @thin_server = Thin::Server.new('0.0.0.0', @port, Server.new(self), {signals:false})
+        @thin_server = Thin::Server.new(@uri.host, @uri.port, Server.new(self), {signals:false})
         @thin_server.start
       end
     end
