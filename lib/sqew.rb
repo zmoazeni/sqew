@@ -27,16 +27,16 @@ module Sqew
       Qu
     end
 
-    def server=(raw)
-      URI.parse(raw) # verify it's parsable
-      @server = raw
-    end
-    
     def_delegators :qu, :backend, :backend=, :length, :queues, :reserve, :logger, :logger=, :failure, :failure=
   end
   extend ClassMethods
 
   class << self
+    def server=(raw)
+      URI.parse(raw) # verify it's parsable
+      @server = raw
+    end
+    
     def configure(*args, &block)
       self.backend = Sqew::Backend::LevelDB.new
       block.call(self)
