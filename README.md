@@ -16,7 +16,7 @@ sqew is a lightweight background processor. You start a single process that will
 * You don't care about the enqueueing or job forking performance.
 * You don't need multiple queues (this may change soon).
 
-If these don't fit the bill or you need more power, I recommend you try the great other great gems such as [Resque](https://github.com/defunkt/resque), [Sidekiq](https://github.com/mperham/sidekiq), and [Qu](https://github.com/bkeepers/qu).
+If these don't fit the bill or you need more power, I recommend you try the other great gems such as [Resque](https://github.com/defunkt/resque), [Sidekiq](https://github.com/mperham/sidekiq), and [Qu](https://github.com/bkeepers/qu).
 
 ## Rails Installation
 
