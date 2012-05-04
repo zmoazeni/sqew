@@ -38,4 +38,25 @@ describe Sqew do
       thread.terminate
     end
   end
+
+  context "inline" do
+    before(:all) do
+      @is_inline = Sqew.inline
+      Sqew.inline = true
+    end
+    
+    after(:all) do
+      Sqew.inline = @is_inline
+    end
+    
+    it "runs jobs immediately" do
+      TestJob.reset
+      Sqew.push(TestJob, 77)
+      TestJob.testing.should == 77
+    end
+
+    it "raises errors from jobs" do
+      expect {Sqew.push(ErrorJob, -1) }.to raise_error
+    end
+  end
 end

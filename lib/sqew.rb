@@ -36,6 +36,15 @@ module Sqew
       URI.parse(raw) # verify it's parsable
       @server = raw
     end
+
+    def inline=(inline)
+      self.backend = Sqew::Backend::Immediate.new if inline
+      @inline = inline
+    end
+
+    def inline
+      !! @inline
+    end
     
     def configure(*args, &block)
       self.backend = Sqew::Backend::LevelDB.new
@@ -50,6 +59,7 @@ module Sqew
     end
 
     def push(job, *args)
+      return Qu.enqueue(job, *args) if @inline
       request = Net::HTTP::Post.new("/enqueue")
       request.body = MultiJson.encode("job" => job.to_s, "args" => args)
       http.request(request)
@@ -57,11 +67,13 @@ module Sqew
     alias_method :enqueue, :push
 
     def ping
+      return true if @inline
       request = Net::HTTP::Get.new("/ping")
       http.request(request)
     end
 
     def status
+      raise "Status is not available while Sqew.inline = true" if @inline
       request = Net::HTTP::Get.new("/status")
       response = http.request(request)
       if response.code == "200"
@@ -72,6 +84,7 @@ module Sqew
     end
 
     def set_workers(count)
+      raise "Setting workers is not available while Sqew.inline = true" if @inline
       request = Net::HTTP::Put.new("/workers")
       request.body = count.to_s
       http.request(request)
@@ -79,12 +92,14 @@ module Sqew
     alias_method :workers=, :set_workers
 
     def clear(*queues)
+      raise "Clear is not available while Sqew.inline = true" if @inline
       request = Net::HTTP::Delete.new("/clear")
       request.body = queues.join(",")
       http.request(request)
     end
 
     def delete(id)
+      raise "Delete is not available while Sqew.inline = true" if @inline
       request = Net::HTTP::Delete.new("/#{id}")
       http.request(request)
     end
