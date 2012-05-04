@@ -11,6 +11,7 @@ module Sqew
     end
     
     set :show_exceptions, false
+    set :public_folder, File.expand_path("../../site", File.dirname(__FILE__))
 
     not_found do
       [404, {}, ""]
