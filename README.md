@@ -101,6 +101,10 @@ And the manager will receive the job and start working on it when it can. You ca
 If you're using Rails 4 you can enqueue the job by using the Rails queuing API:
 
     Rails.queue.push(MyJob, 1, 2)
+    
+## Using Sqew within Tests
+
+Within your tests, you can set ```Sqew.inline = true``` and jobs will work immediately as they are enqueued and errors will be re-raised.
 
 ## Is it any good?
 
